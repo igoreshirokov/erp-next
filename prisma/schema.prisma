@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id      Int      @id @default(autoincrement())
+  login    String
+  password String
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  variations Variation[]
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  products Product[]
+}
+
+model Variation {
+  id Int @id @default(autoincrement())
+  name String
+  price Float?
+  sale_price Float?
+  productId Int
+  properties VariationPropertyValue[]
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Property {
+  id Int @id @default(autoincrement())
+  name String
+  values PropertyValue[]
+  relation VariationPropertyValue[]
+}
+
+model PropertyValue {
+  id Int @id @default(autoincrement())
+  value String
+  variations VariationPropertyValue[]
+
+  propertyId Int
+  property Property @relation(fields: [propertyId], references: [id])
+}
+
+model VariationPropertyValue {
+  id Int @id @default(autoincrement())
+  
+  variationId Int
+  propertyId Int
+  propertyValueId Int
+
+  variation Variation @relation(fields: [variationId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
+  propertyValue PropertyValue @relation(fields: [propertyValueId], references: [id])
+
+}
