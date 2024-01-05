@@ -5,3 +5,14 @@
 .product-card {
     display: flex;
 }
+
+.wmsTable {
+    width: 100%;
+}
+
+.selectionItems {
+    display: flex;
+}
+.selectedItemTable {
+
+}

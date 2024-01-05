@@ -1,26 +1,31 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import styles from './productlist.module.css'
-import { ProductCard } from './product-card';
+import { ProductListTable } from './product-list-table';
+import { SelectionItems } from './selection-items';
 
+const useProducts = () => {
+    const productsArr = [];
+    for (let i=0;i<=10000;i++) {
+        productsArr.push({
+            id: i,
+            barcode: 100000 + i,
+            name: "Product " + i,
+            price: 100.00,
+        });
+    }
+    return productsArr
+}
 
 const ProductList = () => {
-    const [products, setProducts] = useState([]);
+    const products = useProducts()
 
-    useEffect(() => {
-        fetch('/api/products/')
-            .then(r => r.json())
-            .then(r => setProducts(r.data));
-    }, []);
-
-    if (products.length) {
-        return (
-            <div className={styles.productList}>
-                {products.map(product => <ProductCard key={'productcardid-' + product.id} product={product} />)}
-            </div>
-        )
-    }
+    
+    return (
+        <div className={styles.productList}>
+            <SelectionItems />
+            {products.length && <ProductListTable products={products} />}
+        </div>
+    )
 }
+
 
 export { ProductList }
