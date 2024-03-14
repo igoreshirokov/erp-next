@@ -1,6 +1,7 @@
 'use client'
 // Создайте файл, например, context.js
 import React, { createContext, useContext, useReducer } from 'react';
+import { useWMS } from './wms.class';
 
 // Создайте контекст
 const WmsStateContext = createContext();
@@ -10,6 +11,7 @@ export const WmsStateProvider = ({ children }) => {
     const initialState = {
         selected: []
     };
+    const WMS = useWMS()
 
     const reducer = (state, action) => {
         switch (action.type) {
@@ -44,13 +46,24 @@ export const WmsStateProvider = ({ children }) => {
                 })
 
                 return {...state, selected: newStateWithNewItem}
+            case 'SEND_ORDER_FORM':
+                const fieldsData = {}
+                const fields = action.payload.forEach(field => {
+                    fieldsData[field.name] = field.value
+                });
+                const data = { ...state, fields: fieldsData }
+                WMS.createOrder(data)
+                
+                // WMS
+                //     .createOrder({...data})
+                
             default:
                 return state;
         }
     };
 
     const [state, dispatch] = useReducer(reducer, initialState);
-    console.log(state)
+    
     return (
         <WmsStateContext.Provider value={{ state, dispatch }}>
             {children}

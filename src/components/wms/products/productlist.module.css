@@ -16,3 +16,21 @@
 .selectedItemTable {
 
 }
+
+.documentFields {
+
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form label {
+    display: flex;
+    flex-direction: column;
+}
+
+.form input {
+    padding: 10px 20px;
+}

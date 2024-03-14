@@ -71,3 +71,26 @@ model VariationPropertyValue {
   propertyValue PropertyValue @relation(fields: [propertyValueId], references: [id])
 
 }
+
+model Order {
+  id Int @id @default(autoincrement())
+  name String @unique
+  manager String
+  client String
+  phone String
+  address String
+  comments String
+  goods Good[]
+
+}
+
+model Good {
+  id Int @id @default(autoincrement())
+  name String 
+  price Int
+  count Int
+  barcode String
+  orderId Int
+
+  order Order @relation(fields: [orderId], references: [id])
+}
